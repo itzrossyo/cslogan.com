@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { db } from "@/lib/firebase"
 import { collection, getDocs, orderBy, limit, query } from "firebase/firestore"
-import { useCart } from "@/context/CartContext" // ✅ use cart context
+import { useCart } from "@/context/CartContext"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css' // ✅ Add this CSS import
 
 export function BookCarousel() {
-    const { addToCart } = useCart() // ✅ no prop needed
+    const { addToCart } = useCart()
 
     const [books, setBooks] = useState<any[]>([])
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -77,12 +79,26 @@ export function BookCarousel() {
                                         </div>
                                         <h3 className="font-semibold mt-4 mb-2">{book.title}</h3>
                                         <p className="text-sm text-muted-foreground mb-2">{book.author}</p>
-                                        <p className="font-bold text-lg">${parseFloat(book.price).toFixed(2)}</p>
+                                        <p className="font-bold text-lg">£{parseFloat(book.price).toFixed(2)}</p>
                                     </CardContent>
                                     <CardFooter className="p-4 pt-0 flex flex-col gap-2">
-                                        <Button className="w-full" onClick={() => addToCart(book)}>
+                                        <Button
+                                            className="w-full"
+                                            onClick={() => {
+                                                addToCart(book)
+                                                toast.success(`Added "${book.title}" to your cart!`, {
+                                                    position: "top-right",
+                                                    autoClose: 3000,
+                                                    hideProgressBar: false,
+                                                    closeOnClick: true,
+                                                    pauseOnHover: true,
+                                                    draggable: true,
+                                                })
+                                            }}
+                                        >
                                             Add to Cart
                                         </Button>
+
                                         {book.isFree && (
                                             <a href={book.pdfUrl} target="_blank" rel="noopener noreferrer" className="w-full">
                                                 <Button variant="outline" className="w-full">
@@ -116,6 +132,20 @@ export function BookCarousel() {
                     </div>
                 </div>
             </div>
+
+            {/* ✅ Add ToastContainer at the end of your component */}
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </section>
     )
 }

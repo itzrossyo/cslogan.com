@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
         const luluOrder = {
             contact_email: orderDetails.email,
             external_id: `bookhaven-${Date.now()}`,
-            items: orderDetails.items.map((item) => ({
+            items: orderDetails.items.map((item:any) => ({
                 external_id: item.id,
                 printable_normalization: {
                     cover: {

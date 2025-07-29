@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { Menu, BookOpen, ShoppingCart, User } from "lucide-react"
 
+
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const [cartOpen, setCartOpen] = useState(false)
@@ -37,7 +38,7 @@ export function Navbar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="text-sm font-medium transition-colors hover:text-primary"
+                                className="text-lg font-medium transition-colors hover:text-primary"
                             >
                                 {item.label}
                             </Link>
@@ -60,6 +61,7 @@ export function Navbar() {
                             <SheetContent>
                                 <SheetTitle className="mb-4">Your Cart</SheetTitle>
                                 <Cart
+
                                     items={cartItems}
                                     onRemove={removeFromCart}
                                     onUpdateQuantity={updateQuantity}
@@ -87,7 +89,7 @@ export function Navbar() {
                                         <Link
                                             key={item.href}
                                             href={item.href}
-                                            className="text-lg font-medium"
+                                            className="text-lg font-medium ml-8"
                                             onClick={() => setIsOpen(false)}
                                         >
                                             {item.label}

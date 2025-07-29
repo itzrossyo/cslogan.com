@@ -14,7 +14,7 @@ export function AdminAuthorManager() {
         image: "/placeholder.svg?height=500&width=400",
     })
 
-    const handleSave = (e) => {
+    const handleSave = (e:any) => {
         e.preventDefault()
         // Save to Firebase
         console.log("Saving author data:", authorData)

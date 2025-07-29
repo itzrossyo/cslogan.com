@@ -9,9 +9,19 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Plus, Edit, Trash2 } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-
+type Book = {
+    id: string;
+    title: string;
+    author: string;
+    price: number;
+    description: string;
+    isFree: boolean;
+    image: string;
+};
 export function AdminBookManager() {
-    const [books, setBooks] = useState([
+
+
+    const [books, setBooks] = useState<Book[]>([
         {
             id: "1",
             title: "The Digital Revolution",
@@ -21,22 +31,28 @@ export function AdminBookManager() {
             isFree: false,
             image: "/placeholder.svg?height=300&width=200",
         },
-    ])
+    ]);
 
-    const [editingBook, setEditingBook] = useState(null)
+    const [editingBook, setEditingBook] = useState<Book | null>(null);
+
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-    const handleSaveBook = (bookData) => {
+    const handleSaveBook = (bookData: Omit<Book, "id">) => {
         if (editingBook) {
-            setBooks((prev) => prev.map((book) => (book.id === editingBook.id ? { ...bookData, id: editingBook.id } : book)))
+            setBooks((prev) =>
+                prev.map((book) =>
+                    book.id === editingBook.id ? { ...bookData, id: editingBook.id } : book
+                )
+            );
         } else {
-            setBooks((prev) => [...prev, { ...bookData, id: Date.now().toString() }])
+            setBooks((prev) => [...prev, { ...bookData, id: Date.now().toString() }]);
         }
-        setEditingBook(null)
-        setIsDialogOpen(false)
-    }
+        setEditingBook(null);
+        setIsDialogOpen(false);
+    };
 
-    const handleDeleteBook = (id) => {
+
+    const handleDeleteBook = (id:any) => {
         setBooks((prev) => prev.filter((book) => book.id !== id))
     }
 
@@ -104,8 +120,13 @@ export function AdminBookManager() {
         </div>
     )
 }
+type BookFormProps = {
+    book: Book | null;
+    onSave: (bookData: Omit<Book, "id">) => void;
+    onCancel: () => void;
+};
 
-function BookForm({ book, onSave, onCancel }) {
+function BookForm({ book, onSave, onCancel }:BookFormProps) {
     const [formData, setFormData] = useState({
         title: book?.title || "",
         author: book?.author || "",
@@ -115,7 +136,7 @@ function BookForm({ book, onSave, onCancel }) {
         image: book?.image || "",
     })
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault()
         onSave(formData)
     }
